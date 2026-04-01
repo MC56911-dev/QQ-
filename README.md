@@ -15,7 +15,7 @@
 | Live site (GitHub Pages) · 在线站点 | [https://mc56911-dev.github.io/QQ-/](https://mc56911-dev.github.io/QQ-/) *(enable Pages in repo settings if the link is not live yet)* |
 | YouTube demo · 演示视频 | [Project video presentation](https://youtu.be/_k_L0Fz808I) |
 | Slide deck (PPTX) · 演示幻灯片 | [动态字体海报生成网站汇报.pptx](https://github.com/user-attachments/files/26393755/default.pptx) |
-| Presentation (GitHub Pages) · 演示网页 | [字体网站-8891（在线演示）](https://mc56911-dev.github.io/QQ-/x/%E5%AD%97%E4%BD%93%E7%BD%91%E7%AB%99-8891/index.html) |
+| Presentation (GitHub Pages) · 演示网页 | [字体网站在线演示](https://mc56911-dev.github.io/QQ-/) |
 
 **Sharing note · 分享说明**
 - Use public HTTPS links only: GitHub / YouTube / GitHub Pages.
