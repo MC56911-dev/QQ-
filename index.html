@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Typography Poster Generator · Full Preview</title>
+  <style>
+    :root {
+      --bg: #070a10;
+      --panel: #111625;
+      --panel-soft: rgba(23, 29, 46, 0.65);
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #e7edff;
+      --sub: #aeb7ce;
+      --brand: #7df5c5;
+      --brand-2: #8eb0ff;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: radial-gradient(circle at 10% -10%, #24345f 0%, var(--bg) 45%);
+      color: var(--text);
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      scroll-behavior: smooth;
+    }
+    a { color: inherit; }
+    .file-proto-warn {
+      display: none;
+      margin: 0;
+      padding: 10px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #fde68a;
+      color: #3b2a00;
+      border-bottom: 1px solid #f59e0b;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      background: rgba(12, 16, 28, 0.72);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #f4f7ff;
+    }
+    .segment {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .segment button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: #dce5ff;
+      background: transparent;
+      cursor: pointer;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .segment button[aria-selected="true"] {
+      color: #111629;
+      background: linear-gradient(120deg, #f2f7ff, #deebff);
+      font-weight: 600;
+    }
+    .top-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: #eaf2ff;
+      text-decoration: none;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .btn.primary {
+      background: linear-gradient(120deg, var(--brand), #96e8ff);
+      color: #08201a;
+      border: 0;
+      font-weight: 700;
+    }
+    .wrap {
+      width: min(1180px, 92vw);
+      margin: 0 auto;
+    }
+    .hero {
+      padding: 70px 0 38px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .hero h1 {
+      margin: 0 0 18px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.12;
+    }
+    .hero p {
+      margin: 0;
+      color: var(--sub);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+    .hero-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(145deg, rgba(150, 184, 255, 0.2), rgba(124, 246, 196, 0.1));
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.36);
+    }
+    .hero-stat {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .hero-stat div {
+      border-radius: 12px;
+      background: rgba(11, 14, 24, 0.5);
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--sub);
+    }
+    .hero-stat strong {
+      display: block;
+      color: #f2f7ff;
+      font-size: 19px;
+      margin-bottom: 4px;
+    }
+    section {
+      padding: 16px 0 36px;
+    }
+    h2 {
+      font-size: 30px;
+      margin: 0 0 14px;
+    }
+    .subtitle {
+      color: var(--sub);
+      margin: 0 0 20px;
+      line-height: 1.7;
+    }
+    .preview-panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: #03050a;
+      height: clamp(420px, 60vh, 680px);
+      position: relative;
+    }
+    .preview-panel iframe {
+      border: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .methods {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .method-item, .style-card, .poster {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel-soft);
+    }
+    .method-item {
+      padding: 14px;
+    }
+    .method-item b {
+      font-size: 13px;
+      display: inline-flex;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(141, 176, 255, 0.2);
+      margin-bottom: 8px;
+    }
+    .method-item h3 {
+      margin: 0 0 7px;
+      font-size: 15px;
+    }
+    .method-item p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .styles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .style-card {
+      padding: 16px;
+    }
+    .style-card h3 {
+      margin: 0;
+      font-size: 19px;
+    }
+    .style-card .en {
+      color: #9eb8ff;
+      margin: 4px 0 10px;
+      font-size: 13px;
+    }
+    .style-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--sub);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+    .posters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .poster {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: rgba(10, 14, 24, 0.75);
+    }
+    .poster img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--line);
+    }
+    .poster .label {
+      padding: 10px 12px 12px;
+    }
+    .poster h4 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .poster p {
+      margin: 0;
+      color: #b8c6ea;
+      font-size: 12px;
+    }
+    .export-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(141, 176, 255, 0.16), rgba(125, 245, 197, 0.12));
+    }
+    .export-box p {
+      margin: 0 0 12px;
+      line-height: 1.8;
+      color: #d6dff7;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(11, 16, 30, 0.52);
+    }
+    footer {
+      margin-top: 28px;
+      border-top: 1px solid var(--line);
+      padding: 20px 0 30px;
+      color: #8f9cbc;
+      font-size: 13px;
+    }
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; padding-top: 42px; }
+      .methods, .styles, .posters { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .topbar { flex-wrap: wrap; }
+      .top-actions { margin-left: 0; }
+      .methods, .styles, .posters { grid-template-columns: 1fr; }
+      .hero-stat { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <p id="fileProtoWarn" class="file-proto-warn" role="status">
+    You are opening this page via file://. Please start the local preview script first, then visit <code>http://127.0.0.1:8891/</code>.
+  </p>
+
+  <header class="topbar">
+    <div class="logo">Dynamic Type Lab</div>
+    <div class="segment" role="tablist" aria-label="Style switch">
+      <button type="button" id="tab-hypha01" role="tab" aria-selected="true" aria-controls="site-frame">Fern Type</button>
+      <button type="button" id="tab-hypha3d" role="tab" aria-selected="false" aria-controls="site-frame">Popcorn Font</button>
+      <button type="button" id="tab-sketch" role="tab" aria-selected="false" aria-controls="site-frame">Dot Type</button>
+    </div>
+    <div class="top-actions">
+      <a class="btn" href="#guide">How to Use</a>
+      <a class="btn primary" href="#live">Start Preview</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h1>Let Typography Escape Static Frames<br />and Grow Like a Living Organism</h1>
+        <p>
+          This is a dynamic typography poster generator. Enter any word, switch styles, adjust parameters, and place custom backgrounds to create visuals in real time. It is not just a webpage, but an inspiration lab where designers and code co-create.
+        </p>
+      </div>
+      <div class="hero-card">
+        <strong>Design Goal</strong>
+        <p class="subtitle" style="margin:8px 0 0;">
+          Turn typography from a static result into a dynamic process with web technology, then export polished JPG/GIF posters after iterative tuning.
+        </p>
+        <div class="hero-stat">
+          <div><strong>3</strong>Type Styles</div>
+          <div><strong>20+</strong>Adjustable Controls</div>
+          <div><strong>2</strong>Export Formats</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="live">
+      <h2>Live Preview Window</h2>
+      <p class="subtitle">Switch styles from the top bar and the matching generator loads below. Use local preview mode to avoid file:// resource issues.</p>
+      <div class="preview-panel">
+        <iframe id="site-frame" title="Live dynamic typography preview"></iframe>
+      </div>
+    </section>
+
+    <section id="guide">
+      <h2>How to Use (Complete Workflow)</h2>
+      <div class="methods">
+        <article class="method-item">
+          <b>1</b>
+          <h3>Input Text and Layout</h3>
+          <p>Enter any word and adjust size and spacing to define the main visual rhythm.</p>
+        </article>
+        <article class="method-item">
+          <b>2</b>
+          <h3>Select a Font Style</h3>
+          <p>Switch between Fern, Popcorn, and Dot modes, each with independent dynamic controls.</p>
+        </article>
+        <article class="method-item">
+          <b>3</b>
+          <h3>Set Background and Color</h3>
+          <p>Upload custom backgrounds and fine-tune color, contrast, and highlight intensity.</p>
+        </article>
+        <article class="method-item">
+          <b>4</b>
+          <h3>Export Output</h3>
+          <p>After final tuning, export JPG or GIF for social media and portfolio presentation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Detailed Style Introduction</h2>
+      <p class="subtitle">Each style supports the same workflow: set the scene first, then sculpt the typography motion.</p>
+      <div class="styles">
+        <article class="style-card">
+          <h3>Fern Type</h3>
+          <p class="en">Organic Growth Aesthetics</p>
+          <ul>
+            <li>Control mutation level, growth speed, and thickness for organic expansion trajectories.</li>
+            <li>Supports random palettes and fluorescent tinting for bioluminescent looks on dark backgrounds.</li>
+            <li>Ideal for nature, experimental, and future-ecology posters, exportable as GIF/JPG.</li>
+          </ul>
+        </article>
+        <article class="style-card">
+          <h3>Popcorn Font</h3>
+          <p class="en">3D Rhythmic Volume</p>
+          <ul>
+            <li>Adjust particle density, depth thickness, and blob size to build sculptural volume.</li>
+            <li>Control burst-growth duration and pause rotation to capture key visual moments.</li>
+            <li>Great for playful and event-focused key visuals with one-click export.</li>
+          </ul>
+        </article>
+        <article class="style-card">
+          <h3>Dot Type</h3>
+          <p class="en">Pop Energy and Impact</p>
+          <ul>
+            <li>Match typography colors to the background and tune dot density and hierarchy.</li>
+            <li>Supports linear connections, 3D mode switching, and explosion effects for stronger tension.</li>
+            <li>Suitable for pop-culture posters, exhibition graphics, and brand visual experiments.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Generated Poster Gallery</h2>
+      <p class="subtitle">Real images provided by your team, including interface screenshots and exported poster results.</p>
+      <div class="posters">
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_588ccd5e0c032b459ac14dc6edbb5e39-4e5323fc-a02a-4df3-b46a-c95545437c27.png" alt="Fern type interface screenshot 1" loading="lazy" />
+          <div class="label">
+            <h4>Fern Type · Typeface Panel</h4>
+            <p>Typeface selection interface</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_81e70996817e2d2b37be144c7d0ee6eb-46a0be03-b493-4d83-82ad-4597601041f9.png" alt="Fern type parameter screenshot" loading="lazy" />
+          <div class="label">
+            <h4>Fern Type · Growth Controls</h4>
+            <p>Speed, branching, hypha width, and max tips</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_366f7f73c98ddcbb5b693c4367a1a8e5-1530a7f0-4c83-4836-8903-17f40b631798.png" alt="Background and export settings screenshot" loading="lazy" />
+          <div class="label">
+            <h4>Background and Export Module</h4>
+            <p>Supports background import and PNG/JPEG export</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_0523c8fbcb21704c252a7f1fb19b2009-9d7dbf4b-1cd4-4d88-b047-c0663200fab7.png" alt="Poster sample red dots on blue" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample A</h4>
+            <p>Dot type export result · RED/BLUE</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_a3b7bb2f9c4197abf1fd774eaa258813-d1e3f15f-a01d-491a-9dff-8e238dc6bdd2.png" alt="Poster sample pink background" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample B</h4>
+            <p>Popcorn font export result · PINK</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_960da7db6dca6208fa6f06c321835718-9e2b8a43-92d3-4315-8ed4-c60349e81864.png" alt="Creative interface screenshot AIC example" loading="lazy" />
+          <div class="label">
+            <h4>Creative Interface · AIC</h4>
+            <p>Live preview of popcorn font with layered background</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_a8a594d9744db8a4dc3c66404a322191-5fb255f5-55f0-4144-afe2-0068dd8bb87f.png" alt="Creative interface screenshot GROW example" loading="lazy" />
+          <div class="label">
+            <h4>Creative Interface · GROW</h4>
+            <p>Fern growth effect preview</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_8f7b266f37e2ae2b406540b25ccbb711-6c7daae2-5886-412d-9455-14fbab361abe.png" alt="Poster sample yellow background black dots" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample C</h4>
+            <p>Dot type export result · THINK</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_74ca0c047b29ad5ffeb4c5c0bcfdb66d-66dba9b5-579b-4f4b-ba26-a7b05d8e419e.png" alt="Poster sample AIC grayscale background" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample D</h4>
+            <p>Popcorn font export result · AIC</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_be12fd8d308293a68924dfcfef86d3f5-4a6d3846-e227-4245-8489-78540e20b130.png" alt="Poster sample GROW colorful texture" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample E</h4>
+            <p>Fern type export result · GROW</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_a9dc67df0c2f2aa646c1614c33de609e-b7113aec-a3f3-4e6a-8c4e-e67a89eeaba2.png" alt="Poster sample DAZZ" loading="lazy" />
+          <div class="label">
+            <h4>Poster Sample F</h4>
+            <p>Dot type export result · DAZZ</p>
+          </div>
+        </article>
+        <article class="poster">
+          <img src="assets/gallery/c__Users____AppData_Roaming_Cursor_User_workspaceStorage_283b3e4316146873b7c0c40d1c9e3ef6_images_e082e222bf583a26878e6c1fc2e5ba01-9fa2fad8-1063-4f1f-b30d-c5f886d781df.png" alt="Dot type creation interface DAZZ" loading="lazy" />
+          <div class="label">
+            <h4>Dot Type · DAZZ</h4>
+            <p>Dot Type live creation interface screenshot</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="export-box">
+        <h2 style="margin-top:0;">Export Guide</h2>
+        <p>
+          After finalizing your visual, export a static JPG poster or save the full motion as a GIF. For best quality, lock type settings first, then fine-tune animation speed and color before export.
+        </p>
+        <div class="chips">
+          <span class="chip">JPG: Portfolio Cover</span>
+          <span class="chip">GIF: Social Media Sharing</span>
+          <span class="chip">Custom Background Support</span>
+          <span class="chip">Suitable for Course Documentation</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Dynamic Typography Poster Generator · A practical exploration combining web technology with dynamic design expression.
+      <br /><br />
+      Team Members:
+      <br />WANG CHUN: MC569112
+      <br />CHEN YUXUAN: MC569086
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var paths = {
+        hypha01: "font-site-versions/hypha-01-new/index.html?v=20260401-hotfix2",
+        hypha3d: "font-site-versions/hypha-03-3d/index.html?v=20260401-hotfix",
+        sketch: "font-site-versions/sketch-fonts-bundle/sketchFonts-main/index.html?v=20260401-semilla"
+      };
+      var keys = ["hypha01", "hypha3d", "sketch"];
+      var iframe = document.getElementById("site-frame");
+      var tabs = {
+        hypha01: document.getElementById("tab-hypha01"),
+        hypha3d: document.getElementById("tab-hypha3d"),
+        sketch: document.getElementById("tab-sketch")
+      };
+
+      function keyFromHash() {
+        var h = (location.hash || "").replace(/^#/, "");
+        if (keys.indexOf(h) !== -1) return h;
+        return "hypha01";
+      }
+
+      function setActive(key, updateHash) {
+        if (updateHash !== false && history.replaceState) {
+          history.replaceState(null, "", "#" + key);
+        }
+        keys.forEach(function (k) {
+          tabs[k].setAttribute("aria-selected", k === key ? "true" : "false");
+        });
+        iframe.src = paths[key];
+      }
+
+      tabs.hypha01.addEventListener("click", function () { setActive("hypha01"); });
+      tabs.hypha3d.addEventListener("click", function () { setActive("hypha3d"); });
+      tabs.sketch.addEventListener("click", function () { setActive("sketch"); });
+      window.addEventListener("hashchange", function () { setActive(keyFromHash(), false); });
+      setActive(keyFromHash(), false);
+
+      if (location.protocol === "file:") {
+        var warn = document.getElementById("fileProtoWarn");
+        if (warn) warn.style.display = "block";
+      }
+    })();
+  </script>
+</body>
+</html>
