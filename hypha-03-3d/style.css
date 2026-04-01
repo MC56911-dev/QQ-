@@ -1,0 +1,270 @@
+@font-face {
+  font-family: 'EDNimpkish';
+  src: url('./fonts/EDNimpkish-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GTPressuraMonoItalic';
+  src: url('./fonts/GT-Pressura-Mono-Regular-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'TTNormsBold';
+  src: url('./fonts/TypeType-TT-Norms-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LettersLavish';
+  src: url('./fonts/imported/Letters-Lavish.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'LettersTorn';
+  src: url('./fonts/imported/Letters-Torn.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'FlorRuinaFlor';
+  src: url('./fonts/imported/FlorDeRuina-Flor.woff2') format('woff2'),
+       url('./fonts/imported/FlorDeRuina-Flor.woff') format('woff'),
+       url('./fonts/imported/FlorDeRuina-Flor.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FlorRuinaFractura';
+  src: url('./fonts/imported/FlorDeRuina-Fractura.woff2') format('woff2'),
+       url('./fonts/imported/FlorDeRuina-Fractura.woff') format('woff'),
+       url('./fonts/imported/FlorDeRuina-Fractura.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FlorRuinaGermen';
+  src: url('./fonts/imported/FlorDeRuina-Germen.woff2') format('woff2'),
+       url('./fonts/imported/FlorDeRuina-Germen.woff') format('woff'),
+       url('./fonts/imported/FlorDeRuina-Germen.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FlorRuinaRuina';
+  src: url('./fonts/imported/FlorDeRuina-Ruina.woff2') format('woff2'),
+       url('./fonts/imported/FlorDeRuina-Ruina.woff') format('woff'),
+       url('./fonts/imported/FlorDeRuina-Ruina.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FlorRuinaSemilla';
+  src: url('./fonts/imported/FlorDeRuina-Semilla.woff2') format('woff2'),
+       url('./fonts/imported/FlorDeRuina-Semilla.woff') format('woff'),
+       url('./fonts/imported/FlorDeRuina-Semilla.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresGX';
+  src: url('./fonts/imported/OuvrieresGX.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresAffamees';
+  src: url('./fonts/imported/Ouvrieres-affamees.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresAgricultrices';
+  src: url('./fonts/imported/Ouvrieres-agricultrices.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresExploratrices';
+  src: url('./fonts/imported/Ouvrieres-exploratrices.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresRassasiees';
+  src: url('./fonts/imported/Ouvrieres-rassasiees.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'OuvrieresSoldates';
+  src: url('./fonts/imported/Ouvrieres-soldates.ttf') format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: 'TTNormsBold', 'Courier New', monospace;
+  background: #2a2a2a;
+  color: #1c1c1c;
+  position: center;
+  
+}
+
+.controls {
+  max-width: 1080px;
+  margin: 10px auto;
+  /* padding: 10px; */
+  background: white;
+  border: 1px solid rgb(226, 226, 226);
+  text-align: start;
+}
+
+.title {
+  background: black;
+  color: white;
+  padding: 8px 0;
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #888;
+}
+
+.subtitle .underline {
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.section-label {
+  margin: 10px 0 5px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 13px;
+}
+
+#textInput {
+  width: 100%;
+  height: 80px;
+  font-family: 'EDNimpkish', 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  background: white;
+  color: black;
+  border: none;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  resize: none;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  background: rgb(200, 17, 17);
+  color: white;
+  border: none;
+  margin-top: 10px;
+  font-family: 'GTPressuraMonoItalic', 'Courier New', monospace;
+  text-align: center;
+}
+
+.slider-group {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.slider-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+input[type="range"] {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #000000;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #28980c;
+  margin-top: -6px;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+canvas {
+  margin: 0;
+  font-family: 'EDNimpkish', 'Courier New', monospace;
+  background: #2a2a2a;
+  color: #191919;
+  position: fixed;
+  left: 220px;
+}
+
+.font-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 210px;
+  height: 100vh;
+  overflow-y: auto;
+  background: #ededed;
+  border-right: 1px solid #d5d5d5;
+  padding: 36px 22px;
+  box-sizing: border-box;
+}
+
+.font-sidebar h2 {
+  margin: 0 0 16px;
+  color: #98a3af;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.font-sidebar h3 {
+  margin: 8px 0 12px;
+  font-size: 18px;
+}
+
+#fontList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#fontList li {
+  margin: 0;
+}
+
+#fontList button {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: #98a3af;
+  font-size: 20px;
+  line-height: 1.3;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+#fontList button:hover,
+#fontList button.is-active {
+  color: #202020;
+  font-weight: 700;
+}

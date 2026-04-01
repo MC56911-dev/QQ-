@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蕨类字体 / Fern type</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- 本地 p5，解压后无需联网即可打开 -->
+  <script src="./p5.min.js"></script>
+  <script src="./gif.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f1f8f4;
+      color: #1f2937;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .font-sidebar { background: #ffffff; border-right: 1px solid #d0eadb; z-index: 5; }
+    .font-sidebar h2, .font-sidebar h3 { color: #6f8d77; }
+    #fontList button {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      color: #6f8d77;
+      font-size: 14px;
+      line-height: 1.35;
+      padding: 6px 0;
+      cursor: pointer;
+      word-break: break-word;
+    }
+    #fontList button.is-active, #fontList button:hover { color: #111827; font-weight: 700; }
+    .main { margin-left: 210px; display: grid; grid-template-columns: 360px 1fr; height: 100vh; position: relative; z-index: 2; }
+    .panel { border-right: 1px solid #d0eadb; padding: 20px 18px; box-sizing: border-box; overflow: auto; background: #ffffff; position: relative; z-index: 3; }
+    .panel h4 { margin: 0 0 8px; font-size: 13px; color: #4f6d5b; letter-spacing: 0.08em; text-transform: uppercase; }
+    .panel-block { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed #cfe0d3; }
+    .panel label { display: block; margin-top: 8px; font-size: 13px; color: #2f5f4b; }
+    .panel input, .panel select, .panel button { width: 100%; margin-top: 6px; background: #ffffff; color: #111827; border: 1px solid #cbe5d4; border-radius: 8px; padding: 8px 10px; box-sizing: border-box; font-size: 14px; }
+    .panel input:focus, .panel select:focus { outline: 2px solid #b7eacc; border-color: #63d18a; }
+    .panel button { cursor: pointer; background: #eaf7f0; border-color: #bfe8d1; transition: background 0.16s ease, border-color 0.16s ease, transform 0.08s ease; }
+    .panel button:hover { background: #dff4e7; border-color: #8fe1b3; }
+    .panel button:active { transform: translateY(1px); }
+    .toggle-row { display: flex; gap: 10px; align-items: center; margin-top: 8px; font-size: 13px; color: #2f5f4b; }
+    .toggle-row button { width: auto; margin-top: 0; padding: 5px 10px; border-radius: 6px; font-size: 12px; }
+    .toggle-row input { width: auto; margin: 0; }
+    .preset-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .canvas-wrap { position: relative; height: 100vh; background: #0f1115; overflow: hidden; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 12px 12px 48px; box-sizing: border-box; }
+    .canvas-board { flex: 1; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; }
+    #canvas-container { width: min(620px, 100%); aspect-ratio: 210 / 297; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.35); box-shadow: 0 12px 32px rgba(0,0,0,0.35); overflow: hidden; line-height: 0; }
+    #canvas-container canvas { width: 100% !important; height: auto !important; display: block; position: static !important; left: auto !important; top: auto !important; margin: 0 !important; background: transparent !important; }
+    #statusText { display: none; }
+  </style>
+</head>
+<body>
+  <aside class="font-sidebar">
+    <h3>蕨类 / Fern</h3>
+    <h3>字体 / Typeface</h3>
+    <h2>-</h2>
+    <ul id="fontList"></ul>
+  </aside>
+  <main class="main">
+    <section class="panel">
+      <div class="panel-block">
+        <h4>文本 / Text</h4>
+        <input id="hyphaText" type="text" value="GROW">
+        <label>字体大小 / Font size：<span id="fontSizeScaleVal">1.00</span></label>
+        <input id="fontSizeScale" type="range" min="0.6" max="1.8" step="0.05" value="1.00">
+        <label>字距 / Letter spacing</label>
+        <input id="letterSpacing" type="range" min="0.6" max="2.2" step="0.1" value="1.0">
+      </div>
+      <div class="panel-block">
+        <h4>变异程度 / Mutation level</h4>
+        <select id="mutation">
+          <option value="0.8">常规 / Regular</option>
+          <option value="1.3" selected>略野 / A little wild</option>
+          <option value="1.9">疯长 / Overgrown</option>
+        </select>
+      </div>
+      <div class="panel-block">
+        <h4>生长 / Growth</h4>
+        <label>速度 / Speed</label>
+        <input id="growthSpeed" type="range" min="20" max="280" value="120">
+        <label>分支 / Branching</label>
+        <input id="branchRate" type="range" min="0.01" max="0.2" step="0.01" value="0.06">
+        <label>菌丝粗细 / Hypha width</label>
+        <input id="strokeWeight" type="range" min="0.5" max="2.5" step="0.1" value="1.2">
+        <label>尖端上限 / Max tips</label>
+        <input id="maxTips" type="range" min="500" max="3200" step="100" value="1800">
+        <div class="toggle-row"><input type="checkbox" id="toggleMycelium" checked><span>菌丝 / Mycelium</span></div>
+        <div class="toggle-row"><input type="checkbox" id="toggleFruiting" checked><span>子实体 / Fruiting</span></div>
+        <div class="toggle-row"><input type="checkbox" id="toggleColorize" checked><span>荧光着色 / Glow color</span><button id="randomPaletteBtn" type="button">随机配色 / Random palette</button></div>
+      </div>
+      <div class="panel-block">
+        <h4>预设 / Presets</h4>
+        <div class="preset-row">
+          <button type="button" data-preset="regular">常规 / Regular</button>
+          <button type="button" data-preset="wild">略野 / Wild</button>
+          <button type="button" data-preset="overgrown">疯长 / Overgrown</button>
+        </div>
+      </div>
+      <div class="panel-block">
+        <h4>运行 / Run</h4>
+        <button id="growBtn" type="button">生长 / Grow</button>
+        <button id="pauseBtn" type="button">暂停 / Pause</button>
+        <button id="resetBtn" type="button">重置 / Reset</button>
+      </div>
+      <div class="panel-block">
+        <h4>背景 / Background</h4>
+        <input id="bgFile" type="file" accept="image/*" multiple>
+        <div class="preset-row">
+          <button id="prevBg" type="button">上一张 / Prev</button>
+          <button id="nextBg" type="button">下一张 / Next</button>
+          <button id="noBg" type="button">无背景 / None</button>
+        </div>
+        <div id="bgInfo" style="margin-top:8px; font-size:12px; color:#6b7280;">无背景 / No background</div>
+      </div>
+      <div class="panel-block">
+        <h4>导出 / Export</h4>
+        <div style="font-size:12px;color:#6b7280;">A4 海报 / A4 poster：794 × 1123 px</div>
+        <label>方向 / Orientation</label>
+        <select id="exportOrientation">
+          <option value="portrait" selected>竖版 / Portrait</option>
+          <option value="landscape">横版 / Landscape</option>
+        </select>
+        <label>格式 / Format</label>
+        <select id="exportFormat">
+          <option value="png" selected>PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="gif">GIF</option>
+        </select>
+        <button id="exportBtn" type="button">导出文件 / Export file</button>
+      </div>
+    </section>
+    <section id="canvasWrap" class="canvas-wrap">
+      <div class="canvas-board">
+        <div id="canvas-container"></div>
+      </div>
+      <div id="statusText" aria-hidden="true">准备就绪 / Ready</div>
+    </section>
+  </main>
+  <script src="./hypha.js?v=20260401-hotfix2"></script>
+</body>
+</html>

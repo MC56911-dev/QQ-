@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>泡泡字体 / Bubble font</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- 本地 p5，解压后无需联网即可打开 -->
+  <script src="./p5.min.js"></script>
+  <script src="../hypha-01-new/gif.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #fff3ea;
+      color: #1f2937;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .font-sidebar { background: #ffffff; border-right: 1px solid #e7d2c4; z-index: 5; }
+    .font-sidebar h2, .font-sidebar h3 { color: #8b5e48; }
+    #fontList button {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      color: #8b5e48;
+      font-size: 14px;
+      line-height: 1.35;
+      padding: 6px 0;
+      cursor: pointer;
+      word-break: break-word;
+    }
+    #fontList button.is-active, #fontList button:hover { color: #111827; font-weight: 700; }
+    .main { margin-left: 210px; display: grid; grid-template-columns: 360px 1fr; height: 100vh; }
+    .panel { border-right: 1px solid #e7d2c4; padding: 20px 18px; box-sizing: border-box; overflow: auto; background: #fffdfb; }
+    .panel h4 { margin: 0 0 8px; font-size: 13px; color: #7b4d36; letter-spacing: 0.08em; text-transform: uppercase; }
+    .panel-block { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed #e5cdbd; }
+    .panel label { display: block; margin-top: 8px; font-size: 13px; color: #5b3d30; }
+    .panel input, .panel select, .panel button { width: 100%; margin-top: 6px; background: #ffffff; color: #111827; border: 1px solid #e2cbbd; border-radius: 8px; padding: 8px 10px; box-sizing: border-box; font-size: 14px; }
+    .panel button { cursor: pointer; background: #fff1e9; border-color: #f5c8af; transition: background 0.16s ease, border-color 0.16s ease, transform 0.08s ease; }
+    .panel button:hover { background: #ffe7da; border-color: #eab191; }
+    .panel button:active { transform: translateY(1px); }
+    .preset-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .duo-control {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .duo-control .mini label {
+      text-align: center;
+      margin-top: 4px;
+      color: #8b5e48;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .canvas-wrap { position: relative; height: 100vh; background: #f9733f; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 12px 12px 48px; box-sizing: border-box; }
+    .canvas-board { flex: 1; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; }
+    #canvas-container { width: min(620px, 100%); aspect-ratio: 210 / 297; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.35); box-shadow: 0 12px 32px rgba(0,0,0,0.35); overflow: hidden; line-height: 0; }
+    #canvas-container canvas { width: 100% !important; height: auto !important; display: block; position: static !important; left: auto !important; top: auto !important; margin: 0 !important; background: transparent !important; }
+    .status {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: #fff5ef;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: rgba(105, 56, 33, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      padding: 6px 8px;
+    }
+  </style>
+</head>
+<body>
+  <aside class="font-sidebar">
+    <h3>泡泡字体 / Bubble font</h3>
+    <h2>-</h2>
+    <h3>字体 / Typeface</h3>
+    <ul id="fontList"></ul>
+  </aside>
+
+  <main class="main">
+    <section class="panel">
+      <div class="panel-block">
+        <h4>文本 / Text</h4>
+        <input id="fruitText" type="text" value="BOOM">
+        <label>字体大小 / Font size：<span id="fontSize3dVal">1.00</span></label>
+        <input id="fontSize3d" type="range" min="0.6" max="1.8" step="0.05" value="1.00">
+        <label>字距 / Letter spacing：<span id="letterSpacing3dVal">0.95</span></label>
+        <input id="letterSpacing3d" type="range" min="0.7" max="1.8" step="0.05" value="0.95">
+      </div>
+
+      <div class="panel-block">
+        <h4>子实体形态 / Fruiting shape</h4>
+        <label>颗粒密度 / Density：<span id="density3dVal">8</span></label>
+        <input id="density3d" type="range" min="4" max="14" step="1" value="8">
+        <label>立体厚度 / Depth：<span id="depth3dVal">72</span></label>
+        <input id="depth3d" type="range" min="20" max="150" step="2" value="72">
+        <label>团块大小 / Bulge：<span id="bulge3dVal">8.0</span></label>
+        <input id="bulge3d" type="range" min="2" max="20" step="0.5" value="8">
+        <label>孔洞率 / Pores：<span id="poreRate3dVal">0.26</span></label>
+        <input id="poreRate3d" type="range" min="0.05" max="0.6" step="0.01" value="0.26">
+        <label>生长时长 / Grow time：<span id="growTime3dVal">4.0</span> s</label>
+        <input id="growTime3d" type="range" min="1" max="10" step="0.2" value="4">
+      </div>
+
+      <div class="panel-block">
+        <h4>背景取色 / Color from BG</h4>
+        <div class="duo-control">
+          <div class="mini">
+            <label>文本 / Text：<span id="surfaceCtrlVal">0.80</span></label>
+            <input id="surfaceCtrl" type="range" min="0" max="1" step="0.01" value="0.80">
+          </div>
+          <div class="mini">
+            <label>生长 / Growth：<span id="growthCtrlVal">0.70</span></label>
+            <input id="growthCtrl" type="range" min="0" max="1" step="0.01" value="0.70">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <h4>运行 / Run</h4>
+        <button id="grow3dBtn" type="button">生长 3D / Grow 3D</button>
+        <button id="random3dBtn" type="button">随机形态 / Random shape</button>
+        <button id="toggleRotateBtn" type="button">暂停旋转 / Pause spin</button>
+      </div>
+
+      <div class="panel-block">
+        <h4>背景 / Background</h4>
+        <input id="bgFile3d" type="file" accept="image/*" multiple>
+        <div class="preset-row">
+          <button id="prevBg3d" type="button">上一张 / Prev</button>
+          <button id="nextBg3d" type="button">下一张 / Next</button>
+          <button id="noBg3d" type="button">无背景 / None</button>
+        </div>
+        <div id="bgInfo3d" style="margin-top:8px; font-size:12px; color:#8b5e48;">无背景 / No background</div>
+      </div>
+      <div class="panel-block">
+        <h4>导出 / Export</h4>
+        <div style="font-size:12px; color:#8b5e48;">A4 海报 / A4 poster：794 × 1123 px</div>
+        <label>方向 / Orientation</label>
+        <select id="exportOrientation3d">
+          <option value="portrait" selected>竖版 / Portrait</option>
+          <option value="landscape">横版 / Landscape</option>
+        </select>
+        <label>格式 / Format</label>
+        <select id="exportFormat3d">
+          <option value="png" selected>PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="gif">GIF (10s)</option>
+        </select>
+        <button id="exportBtn3d" type="button">导出文件 / Export file</button>
+      </div>
+    </section>
+
+    <section id="canvasWrap3d" class="canvas-wrap">
+      <div class="canvas-board">
+        <div id="canvas-container"></div>
+      </div>
+      <div id="status3d" class="status">拖拽旋转视角 / Drag to orbit</div>
+    </section>
+  </main>
+
+  <script src="./hypha3d.js"></script>
+</body>
+</html>
