@@ -15,7 +15,7 @@
 | Live site (GitHub Pages) · 在线站点 | [https://mc56911-dev.github.io/QQ-/](https://mc56911-dev.github.io/QQ-/) *(enable Pages in repo settings if the link is not live yet)* |
 | YouTube demo · 演示视频 | [Project video presentation](https://youtu.be/_k_L0Fz808I) |
 | Slide deck (PPTX) · 演示幻灯片 | [动态字体海报生成网站汇报.pptx](https://github.com/user-attachments/files/26393755/default.pptx) |
-| Presentation (GitHub Pages) · 演示网页 | [启动预览-8891.bat（本地预览入口）](../../x/字体网站-8891/启动预览-8891.bat) |
+| Presentation (GitHub Pages) · 演示网页 | [本地预览页面（先运行启动脚本）](http://127.0.0.1:8891/)（先运行 `@x/字体网站-8891/启动预览-8891.bat`） |
 
 **Sharing note · 分享说明:** When submitting or presenting, share **public HTTPS links** (GitHub, YouTube, GitHub Pages). Do **not** submit `http://127.0.0.1/…`, `localhost`, or `file://` URLs as the main project link.  
 提交或展示时请使用 **公网 HTTPS 链接**（GitHub、YouTube、GitHub Pages）。请勿将 `127.0.0.1`、`localhost` 或 `file://` 作为主交付链接。
