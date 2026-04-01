@@ -1,4 +1,3 @@
-# Dynamic Font Poster · 动态字体海报生成
 
 | English | 中文 |
 | --- | --- |
@@ -26,7 +25,7 @@
 
 | English | 中文 |
 | --- | --- |
-| **QQ-** is a browser-based tool for **dynamic typography / sketch-style posters**. It uses **p5.js** for drawing and interaction. The interface supports **English and Chinese** via a language toggle, so presenters and users can switch languages. The app is intended for the **visual communication design** workflow: exploring type, layout, and expressive “hand-drawn” text effects before final export or documentation. | **QQ-** 是一款在浏览器中运行的**动态字体 / 手绘风海报**实验工具，使用 **p5.js** 进行绘制与交互。界面提供**中英文切换**按钮，便于演示与使用。项目服务于**视觉传达设计**流程：在定稿或文档化之前，探索字体、版式与手绘感文字效果。 |
+| **Dynamic Font Poster Generator:** We want typography to break out of static frames and become an organic form that can freely “grow.” This is more than a webpage—it is an **inspiration lab** where designers and code work together. In the **style switcher** at the top, you can choose **three distinct type styles**, enter any word to render, **adjust size and tracking in real time**, and add a **custom background**. Each style has its **own dynamic mode**. | **动态字体海报生成网站：**我们希望让字体跳脱静态框架，成为一种可以自由「生长」的有机体。这不仅是一个网页，更是一个让设计师与代码共同协作的**灵感实验室**。在顶部的**风格切换栏**中，可以切换**三种完全不同的字体风格**，输入任意想要生成的单词，并**实时调整字号与字距**，还能添加**自定义背景**。每种字体都拥有**独立的动态模式**。 |
 
 ---
 
@@ -54,16 +53,3 @@ If you add other APIs later, document only the **service homepage** here—**nev
 | --- | --- | --- |
 | WANG CHUN | 王淳 | MC569112 |
 | CHEN YUXUAN | 陳雨萱 | MC569086 |
-
----
-
-## Course deliverables · 课程交付对照
-
-| Requirement · 要求 | Where · 位置 |
-| --- | --- |
-| Final code on `main` | [Repository](https://github.com/MC56911-dev/QQ-) |
-| README: usage, video, members, Pages | This file |
-| Video on YouTube | [Link](https://youtu.be/_k_L0Fz808I) |
-| GitHub Pages (presentation info) | [Pages site](https://mc56911-dev.github.io/QQ-/) — *update when your presentation page is deployed* |
-
-**Due · 截止日期:** 1 April 2026, 10:00.
