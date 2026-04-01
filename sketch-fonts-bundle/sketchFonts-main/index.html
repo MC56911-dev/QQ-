@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>波点字体 / Dot type</title>
+  <script src="./p5.min.js"></script>
+  <script src="../../hypha-01-new/gif.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #fff9db;
+      color: #3f3200;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .font-sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 210px;
+      height: 100vh;
+      overflow-y: auto;
+      background: #fffdf2;
+      border-right: 1px solid #efe6b8;
+      padding: 36px 22px;
+      box-sizing: border-box;
+      z-index: 5;
+    }
+    .font-sidebar h2 {
+      margin: 0 0 16px;
+      color: #ad9240;
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 500;
+    }
+    .font-sidebar h3 {
+      margin: 8px 0 12px;
+      font-size: 18px;
+      color: #9b8747;
+    }
+    #fontList {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    #fontList li {
+      margin: 0;
+    }
+    #fontList button {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      color: #9b8747;
+      font-size: 14px;
+      line-height: 1.35;
+      padding: 6px 0;
+      cursor: pointer;
+      word-break: break-word;
+    }
+    #fontList button:hover,
+    #fontList button.is-active {
+      color: #5f5330;
+      font-weight: 700;
+    }
+    .main {
+      margin-left: 210px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      height: 100vh;
+      position: relative;
+      z-index: 2;
+    }
+    .panel {
+      border-right: 1px solid #efe6b8;
+      padding: 20px 18px;
+      box-sizing: border-box;
+      overflow: auto;
+      background: #ffffff;
+      position: relative;
+      z-index: 3;
+    }
+    .panel h4 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: #8e7b44;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .panel-block {
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #efe3ad;
+    }
+    .panel label {
+      display: block;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #7c6b3f;
+    }
+    .panel input,
+    .panel select,
+    .panel button,
+    .panel textarea {
+      width: 100%;
+      margin-top: 6px;
+      background: #fffef7;
+      color: #5a4c2d;
+      border: 1px solid #ece1af;
+      border-radius: 8px;
+      padding: 8px 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .panel textarea {
+      min-height: 72px;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .panel input:focus,
+    .panel select:focus,
+    .panel textarea:focus {
+      outline: 2px solid #f7edbf;
+      border-color: #ccb978;
+    }
+    .panel button {
+      cursor: pointer;
+      background: #fff2bf;
+      border-color: #e5d18a;
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.08s ease;
+    }
+    .panel button:hover {
+      background: #ffeeb0;
+      border-color: #d6be72;
+    }
+    .panel button:active {
+      transform: translateY(1px);
+    }
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #7c6b3f;
+    }
+    .toggle-row button {
+      width: auto;
+      margin-top: 0;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .toggle-row input {
+      width: auto;
+      margin: 0;
+    }
+    .slider-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .slider-row input[type="range"] {
+      flex: 1;
+      margin-top: 0;
+    }
+    .value {
+      width: 40px;
+      text-align: right;
+      font-size: 12px;
+      color: #9b8747;
+      flex-shrink: 0;
+    }
+    .preset-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .canvas-wrap {
+      position: relative;
+      height: 100vh;
+      background: #ffffff;
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 12px 48px;
+      box-sizing: border-box;
+    }
+    .canvas-board {
+      flex: 1;
+      min-height: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+    #canvas-container {
+      width: min(620px, 100%);
+      aspect-ratio: 210 / 297;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid rgba(204, 170, 0, 0.45);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      line-height: 0;
+    }
+    #canvas-container canvas {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
+    }
+    #frameCounter {
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: #4b5563;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 6px 8px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <aside class="font-sidebar">
+    <h3>波点 / Dots</h3>
+    <h3>字体 / Typeface</h3>
+    <h2>-</h2>
+    <ul id="fontList" aria-label="字体列表 / Font list"></ul>
+  </aside>
+  <main class="main">
+    <section class="panel" aria-label="控制面板 / Control panel">
+      <select id="fontSelect" style="display:none" aria-hidden="true"></select>
+
+      <div class="panel-block">
+        <h4>文本 / Text</h4>
+        <label for="textInput">输入文本 / Input text</label>
+        <textarea id="textInput" placeholder="输入文本，支持换行 / Type text, line breaks OK">DOT</textarea>
+        <label for="fontSizeSlider">字体大小 / Font Size</label>
+        <div class="slider-row">
+          <input type="range" id="fontSizeSlider" min="80" max="320" value="200" step="10" />
+          <span id="fontSizeValue" class="value">200</span>
+        </div>
+        <label for="lineSpacingSlider">行距 / Line Spacing</label>
+        <div class="slider-row">
+          <input type="range" id="lineSpacingSlider" min="0.8" max="2.0" value="1.2" step="0.1" />
+          <span id="lineSpacingValue" class="value">1.2</span>
+        </div>
+        <label for="letterSpacingSlider">字距 / Letter Spacing</label>
+        <div class="slider-row">
+          <input type="range" id="letterSpacingSlider" min="0.5" max="2.0" value="1.0" step="0.1" />
+          <span id="letterSpacingValue" class="value">1.0</span>
+        </div>
+        <label for="colorPicker">字体颜色 / Font Color</label>
+        <input type="color" id="colorPicker" value="#111111" />
+      </div>
+
+      <div class="panel-block">
+        <h4>位置 / Position</h4>
+        <label for="offsetXSlider">X 偏移 / X Offset</label>
+        <div class="slider-row">
+          <input type="range" id="offsetXSlider" min="-500" max="500" value="0" step="5" />
+          <span id="offsetXValue" class="value">0</span>
+        </div>
+        <label for="offsetYSlider">Y 偏移 / Y Offset</label>
+        <div class="slider-row">
+          <input type="range" id="offsetYSlider" min="-200" max="200" value="0" step="5" />
+          <span id="offsetYValue" class="value">0</span>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <h4>线性特效 / Linear effect</h4>
+        <div class="toggle-row">
+          <input type="checkbox" id="waterMaterialCheckbox" checked />
+          <span>线性特效 / Linear Effect</span>
+        </div>
+        <label for="waterStrengthSlider">抖动强度 / Jitter strength</label>
+        <div class="slider-row">
+          <input type="range" id="waterStrengthSlider" min="0" max="100" value="55" step="1" />
+          <span id="waterStrengthValue" class="value">55</span>
+        </div>
+        <label for="waterSpeedSlider">边缘密度 / Edge density</label>
+        <div class="slider-row">
+          <input type="range" id="waterSpeedSlider" min="0" max="100" value="45" step="1" />
+          <span id="waterSpeedValue" class="value">45</span>
+        </div>
+        <label for="handFxSlider">设计特效强度 / Design FX</label>
+        <div class="slider-row">
+          <input type="range" id="handFxSlider" min="0" max="100" value="55" step="1" />
+          <span id="handFxValue" class="value">55</span>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <h4>立体 / 3D depth</h4>
+        <p style="margin:0 0 10px; font-size:12px; color:#6b7280; line-height:1.45;">
+          模拟厚涂字块 + 斜向光，和圆点颗粒感相配；关线性特效时更明显。
+        </p>
+        <div class="toggle-row">
+          <input type="checkbox" id="depth3dCheckbox" />
+          <span>字重挤出 / Extruded 3D</span>
+        </div>
+        <label for="depth3dLayersSlider">挤出层数 / Layers</label>
+        <div class="slider-row">
+          <input type="range" id="depth3dLayersSlider" min="2" max="20" value="9" step="1" />
+          <span id="depth3dLayersValue" class="value">9</span>
+        </div>
+        <label for="depth3dAngleSlider">光向角度 / Light °</label>
+        <div class="slider-row">
+          <input type="range" id="depth3dAngleSlider" min="0" max="360" value="128" step="2" />
+          <span id="depth3dAngleValue" class="value">128</span>
+        </div>
+        <label for="depth3dShadeSlider">背面压暗 / Back shade</label>
+        <div class="slider-row">
+          <input type="range" id="depth3dShadeSlider" min="15" max="95" value="58" step="1" />
+          <span id="depth3dShadeValue" class="value">58</span>
+        </div>
+        <div class="toggle-row">
+          <input type="checkbox" id="depth3dMotionCheckbox" />
+          <span>光向微动 / Drift light</span>
+        </div>
+        <div class="toggle-row">
+          <input type="checkbox" id="depth3dHighlightCheckbox" checked />
+          <span>正面高光 / Front specular</span>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <h4>圆点 / Dots</h4>
+        <div class="toggle-row">
+          <input type="checkbox" id="circleGrowCheckbox" />
+          <span>圆点生成 / Dot Generator</span>
+        </div>
+
+        <label for="dotColorPicker">圆点颜色 / Dot color</label>
+        <input type="color" id="dotColorPicker" value="#111111" />
+
+        <label for="dotGridRowsInput">行数 / Rows</label>
+        <input type="number" id="dotGridRowsInput" min="1" max="200" value="4" />
+
+        <label for="dotGridColsInput">列数 / Cols</label>
+        <input type="number" id="dotGridColsInput" min="1" max="200" value="4" />
+
+        <label for="dotRowGapSlider">行距 / Row gap</label>
+        <div class="slider-row">
+          <input type="range" id="dotRowGapSlider" min="0.5" max="2.5" value="1.0" step="0.05" />
+          <span id="dotRowGapValue" class="value">1.00</span>
+        </div>
+
+        <label for="dotColGapSlider">列距 / Col gap</label>
+        <div class="slider-row">
+          <input type="range" id="dotColGapSlider" min="0.5" max="2.5" value="1.0" step="0.05" />
+          <span id="dotColGapValue" class="value">1.00</span>
+        </div>
+
+        <div style="margin-top:6px; font-size:12px; color:#6b7280;">
+          总数 / Total：
+          <span id="dotGridTotalValue">16</span>
+        </div>
+
+        <!-- 兼容旧逻辑：由 rows*cols 自动同步 -->
+        <input type="number" id="dotCountInput" min="1" max="2000" value="16" style="display:none" />
+
+        <label for="circleGrowSpeedSlider">圆点大小 / Dot Size</label>
+        <div class="slider-row">
+          <input type="range" id="circleGrowSpeedSlider" min="2" max="80" value="18" step="1" />
+          <span id="circleGrowSpeedValue" class="value">18</span>
+        </div>
+        <button type="button" id="refreshDotsBtn">调整圆点 / Adjust Dots</button>
+        <div class="toggle-row" style="margin-top:10px;">
+          <input type="checkbox" id="explosionCheckbox" />
+          <span>爆炸成点 / Explode to dots</span>
+        </div>
+        <label for="explosionStrengthSlider">爆炸强度 / Explosion force</label>
+        <div class="slider-row">
+          <input type="range" id="explosionStrengthSlider" min="20" max="180" value="90" step="1" />
+          <span id="explosionStrengthValue" class="value">90</span>
+        </div>
+        <label for="explosionSpeedSlider">爆炸速度 / Explosion speed</label>
+        <div class="slider-row">
+          <input type="range" id="explosionSpeedSlider" min="0.5" max="3.0" value="1.2" step="0.1" />
+          <span id="explosionSpeedValue" class="value">1.2</span>
+        </div>
+        <button type="button" id="explodeNowBtn">立即爆炸 / Explode now</button>
+      </div>
+
+      <div class="panel-block">
+        <h4>背景 / Background</h4>
+        <label for="bgFile">背景图片 / Background images</label>
+        <input type="file" id="bgFile" accept="image/*" multiple />
+        <label for="bgColorPicker">背景颜色 / Background color</label>
+        <input type="color" id="bgColorPicker" value="#ffd54f" />
+        <div id="bgControls" style="display:none; margin-top:10px;">
+          <div class="preset-row">
+            <button type="button" id="prevBg">上一张 / Prev</button>
+            <button type="button" id="nextBg">下一张 / Next</button>
+          </div>
+          <div class="toggle-row" style="margin-top:8px;">
+            <span id="bgInfo" class="value" style="width:auto; flex:1; text-align:center;">1/1</span>
+          </div>
+          <button type="button" id="noBg" style="margin-top:8px;">无背景 / None</button>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <h4>导出 / Export</h4>
+        <div style="font-size:12px; color:#6b7280;">A4 海报 / A4 poster：794 × 1123 px</div>
+        <label for="exportOrientation">方向 / Orientation</label>
+        <select id="exportOrientation">
+          <option value="portrait" selected>竖版 / Portrait</option>
+          <option value="landscape">横版 / Landscape</option>
+        </select>
+        <label for="exportFormatStatic">格式 / Format</label>
+        <select id="exportFormatStatic">
+          <option value="png" selected>PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="gif">GIF (10s)</option>
+        </select>
+        <button type="button" id="exportStaticBtn">导出文件 / Export file</button>
+        <button type="button" id="generateBtn">重新生成 / Regenerate</button>
+      </div>
+    </section>
+
+    <section class="canvas-wrap" aria-label="画布 / Canvas">
+      <div class="canvas-board">
+        <div id="canvas-container"></div>
+      </div>
+      <div id="frameCounter">静态模式 / Static</div>
+    </section>
+  </main>
+
+  <script src="layout.js?v=20260401-hotfix"></script>
+  <script src="sketch.js?v=20260401-semilla"></script>
+</body>
+</html>
