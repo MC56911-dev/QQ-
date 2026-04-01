@@ -1,0 +1,12 @@
+本文件夹为仓库内 index.html + font-site-versions 的副本。
+
+【推荐 · 直接打开】
+· Windows：双击「启动预览-8891.bat」，约 1 秒后浏览器会打开本站点；勿关闭黑色窗口（停止服务请 Ctrl+C）。
+  若 8891 端口已被占用，脚本会自动改用 8892～8910 中可用端口，请以地址栏为准。
+· macOS：双击「启动预览-8891.command」，或终端执行 ./preview-8891.sh
+
+【勿】用资源管理器双击 index.html（file:// 下波点与字库可能异常）。
+
+【备用】已安装 Python 时，可在本目录执行：python -m http.server 8891 --bind 127.0.0.1
+
+蕨类 #hypha01 · 波点 #sketch · 泡泡 #hypha3d
