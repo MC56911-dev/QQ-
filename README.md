@@ -1,2 +1,69 @@
-[new,md](https://github.com/user-attachments/files/26394413/new.md)
-[README.md](https://github.com/user-attachments/files/26394414/README.md)
+# Dynamic Font Poster · 动态字体海报生成
+
+| English | 中文 |
+| --- | --- |
+| On GitHub `main`, the web app (`index.html`, `style.css`, `sketch.js`, `layout.js`, assets) lives at the **repository root**. The repo holds `README.md`, optional `docs/` for GitHub Pages, and presentation materials linked below. | 在 GitHub `main` 分支上，网页应用（`index.html`、`style.css`、`sketch.js`、`layout.js` 及资源文件）位于**仓库根目录**。仓库包含本 `README.md`、可选的 GitHub Pages 用 `docs/`，以及下方链接的演示材料。 |
+| To run locally: open the folder where `index.html` sits next to `sketch.js` (same level). For browser preview, run `python -m http.server` (or `python3 -m http.server`) in that directory, then open `http://127.0.0.1:8000/index.html` (port may differ). **Do not** rely on `file://` for modules or CORS-sensitive features. | 本地运行：进入 `index.html` 与 `sketch.js` **同级**的工程目录。浏览器预览时在该目录执行 `python -m http.server` 或 `python3 -m http.server`，再打开 `http://127.0.0.1:8000/index.html`（端口以终端显示为准）。请勿用 `file://` 直接打开以免跨域或模块异常。 |
+
+---
+
+## Quick links · 快速链接
+
+| Resource · 资源 | Link · 链接 |
+| --- | --- |
+| GitHub repository · 仓库 | [MC56911-dev/QQ-](https://github.com/MC56911-dev/QQ-) |
+| Live site (GitHub Pages) · 在线站点 | [https://mc56911-dev.github.io/QQ-/](https://mc56911-dev.github.io/QQ-/) *(enable Pages in repo settings if the link is not live yet)* |
+| YouTube demo · 演示视频 | [Project video presentation](https://youtu.be/_k_L0Fz808I) |
+| Slide deck (PPTX) · 演示幻灯片 | [动态字体海报生成网站汇报.pptx](https://github.com/user-attachments/files/26393755/default.pptx) |
+| Presentation (GitHub Pages) · 演示网页 | *Add your Pages URL for the design presentation site when published, e.g. `https://mc56911-dev.github.io/QQ-/presentation.html`* |
+
+**Sharing note · 分享说明:** When submitting or presenting, share **public HTTPS links** (GitHub, YouTube, GitHub Pages). Do **not** submit `http://127.0.0.1/…`, `localhost`, or `file://` URLs as the main project link.  
+提交或展示时请使用 **公网 HTTPS 链接**（GitHub、YouTube、GitHub Pages）。请勿将 `127.0.0.1`、`localhost` 或 `file://` 作为主交付链接。
+
+---
+
+## Project overview · 项目简介
+
+| English | 中文 |
+| --- | --- |
+| **QQ-** is a browser-based tool for **dynamic typography / sketch-style posters**. It uses **p5.js** for drawing and interaction. The interface supports **English and Chinese** via a language toggle, so presenters and users can switch languages. The app is intended for the **visual communication design** workflow: exploring type, layout, and expressive “hand-drawn” text effects before final export or documentation. | **QQ-** 是一款在浏览器中运行的**动态字体 / 手绘风海报**实验工具，使用 **p5.js** 进行绘制与交互。界面提供**中英文切换**按钮，便于演示与使用。项目服务于**视觉传达设计**流程：在定稿或文档化之前，探索字体、版式与手绘感文字效果。 |
+
+---
+
+## How to use · 使用说明
+
+| English | 中文 |
+| --- | --- |
+| 1. Clone or download the `main` branch from GitHub. 2. In the project root, run a local static server (see table above). 3. Open the served `index.html`. 4. Use the **language** control to switch UI between English and Chinese. 5. Adjust controls (text, colors, parameters) to generate your poster-style output. | 1. 从 GitHub 克隆或下载 `main` 分支。2. 在工程根目录启动本地静态服务器（见上表）。3. 通过本地服务器打开 `index.html`。4. 使用界面上的**语言**切换中英文。5. 调节文字、颜色与参数，生成海报式画面。 |
+
+---
+
+## Third-party libraries · 第三方库（无 API Key）
+
+| Service / library | Documentation · 说明 |
+| --- | --- |
+| [p5.js](https://p5js.org/) | Creative coding library loaded from CDN in `index.html`. **No API key** is stored in this repository. |
+
+If you add other APIs later, document only the **service homepage** here—**never** commit keys or secrets.
+
+---
+
+## Group members · 小组成员
+
+| Name (English) | 姓名 | Student ID · 学号 |
+| --- | --- | --- |
+| WANG CHUN | 王淳 | MC569112 |
+| CHEN YUXUAN | 陳雨萱 | MC569086 |
+
+---
+
+## Course deliverables · 课程交付对照
+
+| Requirement · 要求 | Where · 位置 |
+| --- | --- |
+| Final code on `main` | [Repository](https://github.com/MC56911-dev/QQ-) |
+| README: usage, video, members, Pages | This file |
+| Video on YouTube | [Link](https://youtu.be/_k_L0Fz808I) |
+| GitHub Pages (presentation info) | [Pages site](https://mc56911-dev.github.io/QQ-/) — *update when your presentation page is deployed* |
+
+**Due · 截止日期:** 1 April 2026, 10:00.
